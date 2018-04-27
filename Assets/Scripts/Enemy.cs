@@ -4,7 +4,7 @@ using UnityEngine;
 using nInterfaces;
 
 public class Enemy : MonoBehaviour {
-	private string _name;
+	private string _name; 
 }
 
 public class Asteroid : Enemy, IDamageable, IMoveable {
@@ -23,7 +23,7 @@ public class Asteroid : Enemy, IDamageable, IMoveable {
 	}
 
 	public void Destroy() {
-		Destroy(this);
+		Destroy(this.gameObject);
 	}
 
 	public void Move() {

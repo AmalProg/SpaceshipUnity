@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour {
 
-	public float scrollSpeed;
+	public float scrollSpeed; 
 
 	private MeshRenderer _meshRenderer;
 

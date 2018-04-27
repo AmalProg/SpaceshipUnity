@@ -7,7 +7,6 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 
 	public int _life;
 	public int _maxLife;
-	protected List<Weapon> _weapons;
 
 	public void Damage(int d) {
 		_life -= d;
@@ -24,7 +23,7 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 
 		if (_life > _maxLife)
 			_life = _maxLife;
-	}
+	} 
 
 	public abstract void Fire ();
 	public abstract void Destroy ();

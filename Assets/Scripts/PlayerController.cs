@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerController : Spaceship {
 
-	public float speed;
+	public float speed; 
 	public float rotationSpeed;
-
+	public GameObject missilePrefab;
+	 
 	// Use this for initialization
 	void Start () {
-		
 	}
-	
+	 
 	// Update is called once per frame
 	void Update () {
 		Move ();
@@ -21,13 +21,13 @@ public class PlayerController : Spaceship {
 	}
 
 	override public void Fire () {
-		Weapon weapon = new Missile();
-		weapon.Use(this.gameObject, new Vector2(0, 0.5f));
-		_weapons.Add(weapon);
+		GameObject missile = Instantiate (missilePrefab, transform.position, transform.rotation);
+		missile.layer = 9;
+		missile.GetComponent<MissileController>().SetUser(this.gameObject);
 	}
-
+	 
 	override public void Destroy () {
-		Destroy (this);
+		Destroy (this.gameObject);
 	}
 
 	override public void Move () {
