@@ -7,6 +7,8 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 
 	public int _life;
 	public int _maxLife;
+	public float _fireDelay;
+	protected float _fireDelayTimer;
 
 	public void Damage(int d) {
 		_life -= d;

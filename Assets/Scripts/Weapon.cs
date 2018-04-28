@@ -6,7 +6,7 @@ using nInterfaces;
 public abstract class Weapon : MonoBehaviour, IMoveable {
 	 
 	public float _speed;
-	public uint _damage;
+	public int _damage;
 	protected GameObject _user;
 
 	public void Update() {

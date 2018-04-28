@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class PlayerController : Spaceship {
 
-	public float speed; 
-	public float rotationSpeed;
+	public float _speed; 
+	public float _rotationSpeed;
 	public GameObject missilePrefab;
 	 
 	// Use this for initialization
 	void Start () {
+		_speed = 8.0f;
+		_rotationSpeed = 180;
+		_fireDelayTimer = 0.0f;
+		_fireDelay = 0.2f;
 	}
 	 
 	// Update is called once per frame
 	void Update () {
+		_fireDelayTimer += Time.deltaTime;
+
 		Move ();
 
-		if (Input.GetButtonDown ("Fire1"))
+		if (Input.GetButton ("Fire1") && _fireDelayTimer >= _fireDelay) {
 			Fire ();
+
+			_fireDelayTimer = 0;
+		}
 	}
 
 	override public void Fire () {
@@ -38,7 +47,7 @@ public class PlayerController : Spaceship {
 		if (propulsion < 0)
 			propulsion = 0;
 
-		transform.Translate(0, 0, propulsion * elapsedTime * speed);
-		transform.Rotate(0, Input.GetAxis ("Horizontal") * elapsedTime * rotationSpeed, 0);
+		transform.Translate(0, 0, propulsion * elapsedTime * _speed);
+		transform.Rotate(0, Input.GetAxis ("Horizontal") * elapsedTime * _rotationSpeed, 0);
 	}
 }
