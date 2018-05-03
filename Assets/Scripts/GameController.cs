@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour {
 
 	public GameObject background;
 	public GameObject asteroidPrefab;
+	public GameObject weakEnemyPrefab;
 	public float _spawnDelay;
 	private float _spawnDelayTimer;
 
@@ -31,7 +32,7 @@ public class GameController : MonoBehaviour {
 		Vector3 max = backgroundCollider.bounds.max;
 		Vector3 min = backgroundCollider.bounds.min;
 		Vector3 spawnPosition = new Vector3();
-		int side = Random.Range (0, 5);
+		int side = Random.Range (0, 4);
 		switch (side) {
 		case 0:
 			spawnPosition.x = max.x;
@@ -55,7 +56,14 @@ public class GameController : MonoBehaviour {
 			break;
 		}
 		Quaternion rotation = Random.rotation;
-		rotation.eulerAngles = new Vector3 (rotation.eulerAngles.x, rotation.eulerAngles.y, 90);
-		AsteroidController.Spawn(asteroidPrefab, 3, spawnPosition, rotation);
+		rotation.eulerAngles = new Vector3 (0, rotation.eulerAngles.y, 90);
+
+		int enemyChoice = Random.Range (0, 100);
+		if(enemyChoice < 45)
+			AsteroidController.Spawn(asteroidPrefab, 3, spawnPosition, rotation);
+		else if(enemyChoice < 75)
+			WeakEnemyController.Spawn(weakEnemyPrefab, spawnPosition, rotation);
+		else if(enemyChoice < 101)
+			SuicidalEnemyController.Spawn(weakEnemyPrefab, spawnPosition, rotation);
 	}
 }

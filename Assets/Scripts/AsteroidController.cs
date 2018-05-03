@@ -6,7 +6,7 @@ using nInterfaces;
 public class AsteroidController : Enemy {
 
 	public float _speed;
-	public int _life;
+	private int _maxLife;
 	public int _size;
 	private int _nbrChild;
 
@@ -39,11 +39,12 @@ public class AsteroidController : Enemy {
 		Destroy(this.gameObject);
 	}
 
-	new public void Move() {
+	override public void Move() {
 		transform.Translate(0, _speed * Time.deltaTime, 0);
 	}
 
-	static public GameObject Spawn(GameObject asteroidParent, int size, Vector3 position, Quaternion rotation = new Quaternion()) {
+	static public GameObject Spawn(GameObject asteroidParent, int size, Vector3 position, Quaternion rotation,
+		float speed = -1, int life = -1, int pointsValue = -1) {
 		GameObject asteroid = Instantiate (asteroidParent, position, rotation);
 		AsteroidController astCtrl = asteroid.GetComponent<AsteroidController> ();
 		astCtrl._size = size;

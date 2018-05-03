@@ -21,7 +21,7 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 	}
 
 	public void Heal(int h) { 
-		_life += h;
+		_life += h; 
 
 		if (_life > _maxLife)
 			_life = _maxLife;

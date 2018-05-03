@@ -14,9 +14,9 @@ public class WeakEnemyController : SpaceshipEnemy {
 
 		_maxLife = 50;
 		_life = _maxLife;
-		_speed = 8.0f;
 		_rotationSpeed = 60;
 		_turnTime = 1.0f;
+		_speed = 4.0f;
 		_fireDelay = 0.5f;
 		_fireDelayTimer = _fireDelay;
 		_pointsValue = 500;
@@ -50,17 +50,31 @@ public class WeakEnemyController : SpaceshipEnemy {
 		float elapsedTime = Time.deltaTime;
 		_turnTimer -= elapsedTime;
 
-		if(_turnTimer <= 0) {
+		if (_turnTimer <= 0) {
 			moveChoice = Random.Range (0, 101);
 			_turnTimer = _turnTime;
 		}
 
 		if (moveChoice < 37) {
-			transform.Rotate (new Vector3 (0, _rotationSpeed * elapsedTime, 0));
+			transform.Rotate (new Vector3 (_rotationSpeed * elapsedTime, 0, 0));
 		} else if (moveChoice < 76) {
-			transform.Rotate (new Vector3 (0, -_rotationSpeed * elapsedTime, 0));
+			transform.Rotate (new Vector3 (-_rotationSpeed * elapsedTime, 0, 0));
 		}
 
 		transform.Translate(0, 0, elapsedTime * _speed);
+	}
+  
+	static public GameObject Spawn(GameObject weakParent, Vector3 position, Quaternion rotation,
+		float speed = -1, int life = -1, int pointsValue = -1) {
+		GameObject weak = Instantiate (weakParent, position, rotation);
+		WeakEnemyController ctrl = weak.GetComponent<WeakEnemyController> ();
+		if(speed != -1)
+			ctrl._speed = speed;
+		if(life != -1)
+			ctrl._life = life;
+		if(pointsValue != -1)
+			ctrl._pointsValue = pointsValue;	
+
+		return weak;
 	}
 }

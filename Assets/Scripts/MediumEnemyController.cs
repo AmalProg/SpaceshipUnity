@@ -17,6 +17,7 @@ public class MediumEnemyController : SpaceshipEnemy {
 		base.Start ();
 
 		_ai = MediumIA();
+
 		_maxLife = 70;
 		_life = _maxLife;
 		_speed = 6.0f;
