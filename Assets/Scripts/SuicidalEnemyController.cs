@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class SuicidalEnemyController : Enemy {
 
+	private AI _ai;
 	public float _speed;
-	public GameObject player;
 
-	new void Start() {
+	void Start() {
 		base.Start ();
 
+		_ai = SuicialAI();
 		_life = 20;
 		_speed = 3.0f;
 		_pointsValue = 400;
@@ -25,12 +26,7 @@ public class SuicidalEnemyController : Enemy {
 	}
 
 	override public void Move() {
-		float elapsedTime = Time.deltaTime;
-
-		float angle = Vector3.Angle(transform.forward, player.transform.position - transform.position);
-		transform.Rotate(0, angle * elapsedTime, 0);
-
-		transform.Translate(0, 0, elapsedTime * _speed);
+		_ai.Move(this.gameObject);
 	}
 
 	static public GameObject Spawn(GameObject suicidalParent, Vector3 position, Quaternion rotation,
@@ -43,7 +39,6 @@ public class SuicidalEnemyController : Enemy {
 			ctrl._life = life;
 		if(pointsValue != -1)
 			ctrl._pointsValue = pointsValue;	
-
 
 		return weak;
 	}

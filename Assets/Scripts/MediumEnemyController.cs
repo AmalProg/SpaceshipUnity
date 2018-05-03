@@ -10,10 +10,13 @@ public class MediumEnemyController : SpaceshipEnemy {
 	private float _turnTimer = 0; 
 	private int moveChoice;
 	public GameObject missilePrefab;
+	private Ai _ai;
 
 	// Use this for initialization
 	new void Start () {
 		base.Start ();
+
+		_ai = MediumIA();
 
 		_maxLife = 70;
 		_life = _maxLife;
@@ -39,9 +42,7 @@ public class MediumEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Fire () {
-		GameObject missile = Instantiate (missilePrefab, transform.position, transform.rotation);
-		missile.layer = 8;
-		missile.GetComponent<MissileController>().SetUser(this.gameObject);
+		_ai.Fire(gameObject, missilePrefab);
 	}
 
 	new public void Explode (GameObject from) {
@@ -49,22 +50,6 @@ public class MediumEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Move () {
-		float elapsedTime = Time.deltaTime;
-		_turnTimer -= elapsedTime;
-
-		if(_turnTimer <= 0)
-			moveChoice = Random.Range (0, 101);
-
-		if (moveChoice < 37) {
-			transform.Rotate (new Vector3 (0, _rotationSpeed * elapsedTime, 0));
-			_turnTimer = _turnTime;
-		} else if (moveChoice < 76) {
-			transform.Rotate (new Vector3 (0, -_rotationSpeed * elapsedTime, 0));
-			_turnTimer = _turnTime;
-		} else {
-			_turnTimer = _turnTime;
-		}
-
-		transform.Translate(0, 0, elapsedTime * _speed);
+		_ai.Move(gameObject);
 	}
 }

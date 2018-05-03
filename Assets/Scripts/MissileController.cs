@@ -10,10 +10,6 @@ public class MissileController : Weapon {
 		_damage = 10;
 	}
 
-	public void SetUser(GameObject user) {
-		_user = user;
-	}
-
 	override public void Move() {
 		transform.Translate(0, 0, _speed * Time.deltaTime);
 	}

@@ -37,7 +37,10 @@ public class PlayerController : Spaceship {
 	}
 
 	override public void Fire () {
-		GameObject missile = Instantiate (missilePrefab, transform.position, transform.rotation);
+		float angle = Vector3.Angle(new Vector3(1, 0, 0), Input.mousePosition);
+		Quaternion rotation = new Quaternion();
+		rotation.Rotate(0, angle, 0);
+		GameObject missile = Instantiate (missilePrefab, transform.position, rotation);
 		missile.layer = 9;
 		missile.GetComponent<MissileController>().SetUser(this.gameObject);
 	}

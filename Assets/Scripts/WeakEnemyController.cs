@@ -6,9 +6,6 @@ public class WeakEnemyController : SpaceshipEnemy {
 
 	public float _speed; 
 	public float _rotationSpeed;
-	public float _turnTime;
-	private float _turnTimer = 0; 
-	private int moveChoice;
 	public GameObject missilePrefab;
 
 	// Use this for initialization
@@ -17,9 +14,9 @@ public class WeakEnemyController : SpaceshipEnemy {
 
 		_maxLife = 50;
 		_life = _maxLife;
+		_rotationSpeed = 60;
+		_turnTime = 1.0f;
 		_speed = 4.0f;
-		_rotationSpeed = 180;
-		_turnTime = 0.4f;
 		_fireDelay = 0.5f;
 		_fireDelayTimer = _fireDelay;
 		_pointsValue = 500;
@@ -62,12 +59,11 @@ public class WeakEnemyController : SpaceshipEnemy {
 			transform.Rotate (new Vector3 (_rotationSpeed * elapsedTime, 0, 0));
 		} else if (moveChoice < 76) {
 			transform.Rotate (new Vector3 (-_rotationSpeed * elapsedTime, 0, 0));
-		} else {
 		}
 
 		transform.Translate(0, 0, elapsedTime * _speed);
 	}
-
+  
 	static public GameObject Spawn(GameObject weakParent, Vector3 position, Quaternion rotation,
 		float speed = -1, int life = -1, int pointsValue = -1) {
 		GameObject weak = Instantiate (weakParent, position, rotation);
@@ -78,7 +74,6 @@ public class WeakEnemyController : SpaceshipEnemy {
 			ctrl._life = life;
 		if(pointsValue != -1)
 			ctrl._pointsValue = pointsValue;	
-
 
 		return weak;
 	}

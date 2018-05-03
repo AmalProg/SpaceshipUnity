@@ -16,7 +16,7 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 		if(_life < 0) {
 			_life = 0;
 
-			this.Explode(from);
+			Explode(from);
 		}
 	}
 

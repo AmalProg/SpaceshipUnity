@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using nInterfaces;
 
-	public class AsteroidController : Enemy {
+public class AsteroidController : Enemy {
 
 	public float _speed;
 	private int _maxLife;
