@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour {
 	public GameObject background;
 	public GameObject asteroidPrefab;
 	public GameObject weakEnemyPrefab;
+	public GameObject suicidalEnemyPrefab;
+	public GameObject player;
 	public float _spawnDelay;
 	private float _spawnDelayTimer;
 
@@ -14,6 +16,8 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		_spawnDelay = 2.0f;
 		_spawnDelayTimer = _spawnDelay;
+
+		AI.player = player;
 	}
 	
 	// Update is called once per frame
@@ -64,6 +68,6 @@ public class GameController : MonoBehaviour {
 		else if(enemyChoice < 75)
 			WeakEnemyController.Spawn(weakEnemyPrefab, spawnPosition, rotation);
 		else if(enemyChoice < 101)
-			SuicidalEnemyController.Spawn(weakEnemyPrefab, spawnPosition, rotation);
+			SuicidalEnemyController.Spawn(suicidalEnemyPrefab, spawnPosition, rotation);
 	}
 }

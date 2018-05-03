@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class WeakEnemyController : SpaceshipEnemy {
 
-	public float _speed; 
-	public float _rotationSpeed;
+	private AI _ai;
 	public GameObject missilePrefab;
 
 	// Use this for initialization
 	new void Start () {
 		base.Start ();
 
+		_ai = new WeakAI ();
 		_maxLife = 50;
 		_life = _maxLife;
 		_rotationSpeed = 60;
-		_turnTime = 1.0f;
 		_speed = 4.0f;
 		_fireDelay = 0.5f;
 		_fireDelayTimer = _fireDelay;
@@ -47,21 +46,7 @@ public class WeakEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Move () {
-		float elapsedTime = Time.deltaTime;
-		_turnTimer -= elapsedTime;
-
-		if (_turnTimer <= 0) {
-			moveChoice = Random.Range (0, 101);
-			_turnTimer = _turnTime;
-		}
-
-		if (moveChoice < 37) {
-			transform.Rotate (new Vector3 (_rotationSpeed * elapsedTime, 0, 0));
-		} else if (moveChoice < 76) {
-			transform.Rotate (new Vector3 (-_rotationSpeed * elapsedTime, 0, 0));
-		}
-
-		transform.Translate(0, 0, elapsedTime * _speed);
+		_ai.Move (this);
 	}
   
 	static public GameObject Spawn(GameObject weakParent, Vector3 position, Quaternion rotation,

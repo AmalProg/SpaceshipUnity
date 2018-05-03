@@ -5,6 +5,8 @@ using nInterfaces;
 	
 public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveable {
 
+	public float _speed;
+	public float _rotationSpeed;
 	public int _life;
 	public int _maxLife;
 	public float _fireDelay;

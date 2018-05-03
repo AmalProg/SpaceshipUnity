@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerController : Spaceship {
 
-	public float _speed; 
-	public float _rotationSpeed;
 	private int _points;
 	public GameObject missilePrefab;
 	 
@@ -37,9 +35,9 @@ public class PlayerController : Spaceship {
 	}
 
 	override public void Fire () {
-		float angle = Vector3.Angle(new Vector3(1, 0, 0), Input.mousePosition);
 		Quaternion rotation = new Quaternion();
-		rotation.Rotate(0, angle, 0);
+		Vector3 pos = Input.mousePosition;
+		rotation.SetLookRotation(pos);
 		GameObject missile = Instantiate (missilePrefab, transform.position, rotation);
 		missile.layer = 9;
 		missile.GetComponent<MissileController>().SetUser(this.gameObject);

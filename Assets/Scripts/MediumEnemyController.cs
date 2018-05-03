@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class MediumEnemyController : SpaceshipEnemy {
 
-	public float _speed; 
-	public float _rotationSpeed;
-	public float _turnTime;
-	private float _turnTimer = 0; 
-	private int moveChoice;
 	public GameObject missilePrefab;
-	private Ai _ai;
+	private AI _ai;
 
 	// Use this for initialization
 	new void Start () {
 		base.Start ();
 
-		_ai = MediumIA();
+		_ai = new MediumAI();
 
 		_maxLife = 70;
 		_life = _maxLife;
@@ -42,7 +37,7 @@ public class MediumEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Fire () {
-		_ai.Fire(gameObject, missilePrefab);
+		_ai.Fire(this, missilePrefab);
 	}
 
 	new public void Explode (GameObject from) {
@@ -50,6 +45,6 @@ public class MediumEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Move () {
-		_ai.Move(gameObject);
+		_ai.Move(this);
 	}
 }

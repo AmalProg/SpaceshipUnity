@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SuicidalEnemyController : Enemy {
+public class SuicidalEnemyController : SpaceshipEnemy {
 
 	private AI _ai;
-	public float _speed;
 
-	void Start() {
+	new void Start() {
 		base.Start ();
 
-		_ai = SuicialAI();
+		_ai = new SuicidalAI();
 		_life = 20;
 		_speed = 3.0f;
 		_pointsValue = 400;
@@ -26,7 +25,10 @@ public class SuicidalEnemyController : Enemy {
 	}
 
 	override public void Move() {
-		_ai.Move(this.gameObject);
+		_ai.Move(this);
+	}
+
+	override public void Fire() {
 	}
 
 	static public GameObject Spawn(GameObject suicidalParent, Vector3 position, Quaternion rotation,
