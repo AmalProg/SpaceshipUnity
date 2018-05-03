@@ -6,10 +6,13 @@ public class PlayerController : Spaceship {
 
 	public float _speed; 
 	public float _rotationSpeed;
+	private int _points;
 	public GameObject missilePrefab;
 	 
 	// Use this for initialization
 	void Start () {
+		_maxLife = 100;
+		_life = _maxLife;
 		_speed = 8.0f;
 		_rotationSpeed = 180;
 		_fireDelayTimer = 0.0f;
@@ -29,13 +32,17 @@ public class PlayerController : Spaceship {
 		}
 	}
 
+	public void AddPoints(int pts) {
+		_points += pts;
+	}
+
 	override public void Fire () {
 		GameObject missile = Instantiate (missilePrefab, transform.position, transform.rotation);
 		missile.layer = 9;
 		missile.GetComponent<MissileController>().SetUser(this.gameObject);
 	}
 	 
-	override public void Destroy () {
+	override public void Explode (GameObject from) {
 		Destroy (this.gameObject);
 	}
 

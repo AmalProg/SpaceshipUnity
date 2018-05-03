@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using nInterfaces;
 
-public class AsteroidController : Enemy, IDamageable, IMoveable {
+	public class AsteroidController : Enemy {
 
 	public float _speed;
-	public int _life;
+	private int _maxLife;
 	public int _size;
 	private int _nbrChild;
 
 	new void Start() {
 		base.Start ();
-
 		_name = "Asteroid";
-
-		_speed = 5.0f;
-		_life = 30;
-
+		_maxLife = _size * 10;
+		_life = _maxLife;
+		_pointsValue = _size * 100;
 		_nbrChild = Random.Range (1, 7 - _size);
 	}
 
@@ -25,38 +23,31 @@ public class AsteroidController : Enemy, IDamageable, IMoveable {
 		Move ();
 	}
 
-	public void Damage(int d) {
-		_life -= d;
-
-		if(_life < 0) {
-			_life = 0;
-
-			this.Destroy();
-		}
-	}
-
-	public void Destroy() {
+	new public void Explode(GameObject from) {
 		if (_size != 1) {
 			for (uint i = 0; i < _nbrChild; i++) {
-				Quaternion rotation = Random.rotation;
-				rotation.eulerAngles = new Vector3 (rotation.eulerAngles.x, rotation.eulerAngles.y, 90);
+				Quaternion rotation = Random.rotationUniform;
+				print (rotation.eulerAngles.y);
+				float angle = (rotation.eulerAngles.y - 180 / 2) / 2.5f;
+				rotation.eulerAngles = new Vector3 (0, transform.eulerAngles.y + angle, 90);
 
 				AsteroidController.Spawn (this.gameObject, _size - 1, transform.position, rotation);
 			}
 		}
 
+		from.SendMessage ("AddPoints", _pointsValue);
 		Destroy(this.gameObject);
 	}
 
-	public void Move() {
+	override public void Move() {
 		transform.Translate(0, _speed * Time.deltaTime, 0);
 	}
 
-	static public GameObject Spawn(GameObject asteroidParent, int size, Vector3 position, Quaternion rotation = new Quaternion()) {
+	static public GameObject Spawn(GameObject asteroidParent, int size, Vector3 position, Quaternion rotation,
+		float speed = -1, int life = -1, int pointsValue = -1) {
 		GameObject asteroid = Instantiate (asteroidParent, position, rotation);
 		AsteroidController astCtrl = asteroid.GetComponent<AsteroidController> ();
 		astCtrl._size = size;
-		astCtrl._life = size * 10;
 		Vector3 scale = asteroidParent.transform.localScale;
 		asteroid.transform.localScale = new Vector3 (scale.x * size / 3, scale.y * size / 3, scale.z * size / 3);
 	

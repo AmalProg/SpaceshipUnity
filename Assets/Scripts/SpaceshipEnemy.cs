@@ -1,15 +1,20 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using nInterfaces;
 
-public abstract class Enemy : MonoBehaviour, IDamageable, IMoveable {
+public abstract class SpaceshipEnemy : Spaceship {
+
 	protected string _name;
-	protected int _life;
 	protected int _pointsValue;
 
 	protected void Start() {
-		gameObject.layer = 8; // "Enemy"
+		gameObject.layer = 8;
+	}
+
+	override public void Explode (GameObject from) {
+		from.SendMessage ("AddPoints", _pointsValue);
+		Destroy(this.gameObject);
 	}
 
 	protected void switchMapSide(Collider other) {
@@ -35,19 +40,4 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IMoveable {
 			switchMapSide (other);
 		}
 	}
-
-	public void Damage(int d, GameObject from) {
-		_life -= d;
-
-		if(_life < 0) {
-			_life = 0;
-
-			this.Explode(from);
-		}
-	}
-	public void Explode(GameObject from) {
-		from.SendMessage ("AddPoints", _pointsValue);
-		Destroy(this.gameObject);
-	}
-	public abstract void Move();
 }

@@ -1,16 +1,17 @@
-﻿namespace nInterfaces {
+﻿using UnityEngine;
 
-public interface IDamageable {
-	void Damage(int d);
-	void Destroy();
-}
+namespace nInterfaces {
 
-public interface IHealable {
-	void Heal(int h);
-}
+	public interface IDamageable {
+		void Damage(int d, GameObject from);
+		void Explode(GameObject from);
+	}
 
-public interface IMoveable {
-	void Move();
-}
+	public interface IHealable {
+		void Heal(int h);
+	}
 
+	public interface IMoveable {
+		void Move();
+	}
 }
