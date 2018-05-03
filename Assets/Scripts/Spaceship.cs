@@ -10,13 +10,13 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 	public float _fireDelay;
 	protected float _fireDelayTimer;
 
-	public void Damage(int d) {
+	public void Damage(int d, GameObject from) {
 		_life -= d;
 
 		if(_life < 0) {
 			_life = 0;
 
-			this.Destroy();
+			Explode(from);
 		}
 	}
 
@@ -28,6 +28,6 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 	} 
 
 	public abstract void Fire ();
-	public abstract void Destroy ();
+	public abstract void Explode (GameObject from);
 	public abstract void Move ();
 }

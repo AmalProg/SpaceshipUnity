@@ -13,5 +13,9 @@ public abstract class Weapon : MonoBehaviour, IMoveable {
 		Move(); 
 	}
 
+	public void SetUser(GameObject user) {
+		_user = user;
+	}
+
 	public abstract void Move();
 }

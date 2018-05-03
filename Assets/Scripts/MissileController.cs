@@ -1,16 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using nInterfaces;
 
 public class MissileController : Weapon {
 
 	public void Start() {
 		_speed = 15.0f;
 		_damage = 10;
-	}
-
-	public void SetUser(GameObject user) {
-		_user = user;
 	}
 
 	override public void Move() {
@@ -20,7 +17,7 @@ public class MissileController : Weapon {
 	public void OnTriggerEnter(Collider other) {
 		if (other.gameObject.layer != 10) { //"Map"
 
-			other.gameObject.SendMessage ("Damage", _damage);
+			other.gameObject.GetComponent<IDamageable>().Damage(_damage, this.gameObject);
 
 			Destroy (this.gameObject);
 		}
