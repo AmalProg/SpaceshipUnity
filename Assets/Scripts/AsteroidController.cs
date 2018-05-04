@@ -23,7 +23,7 @@ public class AsteroidController : Enemy {
 		Move ();
 	}
 
-	new public void Explode(GameObject from) {
+	override public void Explode(GameObject caster) {
 		if (_size != 1) {
 			for (uint i = 0; i < _nbrChild; i++) {
 				Quaternion rotation = Random.rotationUniform;
@@ -35,7 +35,7 @@ public class AsteroidController : Enemy {
 			}
 		}
 
-		from.SendMessage ("AddPoints", _pointsValue);
+		caster.SendMessage ("AddPoints", _pointsValue);
 		Destroy(this.gameObject);
 	}
 

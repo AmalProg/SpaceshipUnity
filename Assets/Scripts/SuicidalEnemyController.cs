@@ -20,8 +20,8 @@ public class SuicidalEnemyController : SpaceshipEnemy {
 		Move ();
 	}
 
-	new public void Explode (GameObject from) {
-		base.Explode (from);
+	new public void Explode (GameObject caster) {
+		base.Explode (caster);
 	}
 
 	override public void Move() {

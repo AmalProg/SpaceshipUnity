@@ -40,8 +40,8 @@ public class MediumEnemyController : SpaceshipEnemy {
 		_ai.Fire(this, missilePrefab);
 	}
 
-	new public void Explode (GameObject from) {
-		base.Explode (from);
+	new public void Explode (GameObject caster) {
+		base.Explode (caster);
 	}
 
 	override public void Move () {

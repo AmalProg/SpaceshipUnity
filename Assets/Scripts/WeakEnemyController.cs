@@ -41,8 +41,8 @@ public class WeakEnemyController : SpaceshipEnemy {
 		missile.GetComponent<MissileController>().SetUser(this.gameObject);
 	}
 
-	new public void Explode (GameObject from) {
-		base.Explode (from);
+	new public void Explode (GameObject caster) {
+		base.Explode (caster);
 	}
 
 	override public void Move () {

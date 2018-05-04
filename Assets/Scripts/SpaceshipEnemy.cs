@@ -8,12 +8,12 @@ public abstract class SpaceshipEnemy : Spaceship {
 	protected string _name;
 	protected int _pointsValue;
 
-	protected void Start() {
+	protected void Start() { 
 		gameObject.layer = 8;
 	}
 
-	override public void Explode (GameObject from) {
-		from.SendMessage ("AddPoints", _pointsValue);
+	override public void Explode (GameObject caster) {
+		caster.SendMessage ("AddPoints", _pointsValue);
 		Destroy(this.gameObject);
 	}
 

@@ -36,20 +36,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable, IMoveable {
 		}
 	}
 
-	public void Damage(int d, GameObject from) {
+	public void Damage(int d, GameObject caster) {
 		_life -= d;
 
 		if(_life < 0) {
 			_life = 0;
 
-			this.Explode(from);
+			Explode(caster);
 		}
 	}
 
-	public void Explode(GameObject from) {
-		from.SendMessage ("AddPoints", _pointsValue);
-		Destroy(this.gameObject);
-	}
+	public abstract void Explode (GameObject caster);
   
 	public abstract void Move();
 }

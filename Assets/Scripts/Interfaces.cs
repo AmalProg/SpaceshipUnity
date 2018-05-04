@@ -2,8 +2,8 @@
 
 namespace nInterfaces {
 	public interface IDamageable {
-		void Damage(int d, GameObject from);
-		void Explode(GameObject from);
+		void Damage(int d, GameObject caster);
+		void Explode(GameObject caster);
 	}
 
 	public interface IHealable {
