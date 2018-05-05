@@ -6,7 +6,7 @@ public class PlayerController : Spaceship {
 
 	private int _points;
 	public GameObject missilePrefab;
-	 
+
 	// Use this for initialization
 	void Start () {
 		_maxLife = 100;
@@ -16,7 +16,7 @@ public class PlayerController : Spaceship {
 		_fireDelayTimer = 0.0f;
 		_fireDelay = 0.2f;
 	}
-	 
+
 	// Update is called once per frame
 	void Update () {
 		_fireDelayTimer += Time.deltaTime;
@@ -37,13 +37,16 @@ public class PlayerController : Spaceship {
 	override public void Fire () {
 		Quaternion rotation = new Quaternion();
 		Vector3 pos = Input.mousePosition;
+		pos.z = pos.y;
+		pos = Camera.main.ScreenToWorldPoint (pos);
+		pos.y = 0.5f;
 		rotation.SetLookRotation(pos);
 		GameObject missile = Instantiate (missilePrefab, transform.position, rotation);
 		missile.layer = 9;
 		missile.GetComponent<MissileController>().SetUser(this.gameObject);
 	}
-	 
-	override public void Explode (GameObject from) {
+
+	override public void Explode (GameObject caster) {
 		Destroy (this.gameObject);
 	}
 
