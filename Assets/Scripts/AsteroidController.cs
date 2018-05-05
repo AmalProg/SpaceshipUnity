@@ -9,6 +9,7 @@ public class AsteroidController : Enemy {
 	private int _maxLife;
 	public int _size;
 	private int _nbrChild;
+	private Vector3 _direction;
 
 	new void Start() {
 		base.Start ();
@@ -17,19 +18,22 @@ public class AsteroidController : Enemy {
 		_life = _maxLife;
 		_pointsValue = _size * 100;
 		_nbrChild = Random.Range (1, 7 - _size);
+		_direction = new Vector3(transform.up.x, transform.up.y, transform.up.z);
+		_direction.Normalize ();
 	}
 
 	void Update() {
 		Move ();
+
+		float elaspedTime = Time.deltaTime;
+		transform.Rotate (20 * elaspedTime, 35 * elaspedTime, 10 * elaspedTime);
 	}
 
 	override public void Explode(GameObject caster) {
 		if (_size != 1) {
 			for (uint i = 0; i < _nbrChild; i++) {
 				Quaternion rotation = Random.rotationUniform;
-				print (rotation.eulerAngles.y);
-				float angle = (rotation.eulerAngles.y - 180 / 2) / 2.5f;
-				rotation.eulerAngles = new Vector3 (0, transform.eulerAngles.y + angle, 90);
+				rotation.eulerAngles = new Vector3 (0, rotation.eulerAngles.y, 90);
 
 				AsteroidController.Spawn (this.gameObject, _size - 1, transform.position, rotation);
 			}
@@ -40,7 +44,8 @@ public class AsteroidController : Enemy {
 	}
 
 	override public void Move() {
-		transform.Translate(0, _speed * Time.deltaTime, 0);
+		float elaspedTime = Time.deltaTime;
+		transform.Translate(_direction * _speed * elaspedTime, Space.World);
 	}
 
 	static public GameObject Spawn(GameObject asteroidParent, int size, Vector3 position, Quaternion rotation,
