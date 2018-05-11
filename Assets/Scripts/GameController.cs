@@ -8,7 +8,12 @@ public class GameController : MonoBehaviour {
 	public GameObject asteroidPrefab;
 	public GameObject weakEnemyPrefab;
 	public GameObject suicidalEnemyPrefab;
-	public GameObject player;
+	public GameObject playerObj;
+	public GameObject gameUIObj;
+
+	private PlayerController player;
+	private GameUI gameUI;
+
 	public float _spawnDelay;
 	private float _spawnDelayTimer;
 
@@ -17,7 +22,13 @@ public class GameController : MonoBehaviour {
 		_spawnDelay = 2.0f;
 		_spawnDelayTimer = _spawnDelay;
 
-		AI.player = player;
+		player = playerObj.GetComponent<PlayerController> ();
+		gameUI = gameUIObj.GetComponent<GameUI> ();
+
+		AI.player = playerObj;
+
+		gameUI.UpdateLife (player.life);
+		gameUI.UpdatePoints (player.points);
 	}
 	
 	// Update is called once per frame
@@ -29,6 +40,12 @@ public class GameController : MonoBehaviour {
 
 			_spawnDelayTimer = 0.0f;
 		}
+
+		if(player.hasWonPoints)
+			gameUI.UpdatePoints (player.points);
+		if(player.hasLifeChanged)
+			gameUI.UpdateLife (player.life);
+		
 	}
 
 	private void spawnEnemy() {

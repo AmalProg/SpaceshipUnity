@@ -6,6 +6,19 @@ public class PlayerController : Spaceship {
 
 	private int _points;
 	public GameObject missilePrefab;
+	public bool _hasWonPoints;
+	public bool _hasLifeChanged;
+
+	public int points { get { return _points; } }
+	public int life { get { return _life; } }
+	public bool hasWonPoints { get { 
+			bool tmp = _hasWonPoints;
+			_hasWonPoints = false;
+			return tmp; } }
+	public bool hasLifeChanged { get { 
+			bool tmp = _hasLifeChanged;
+			_hasLifeChanged = false;
+			return tmp; } }
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +45,14 @@ public class PlayerController : Spaceship {
 
 	public void AddPoints(int pts) {
 		_points += pts;
+		_hasWonPoints = true;
 	}
+
+	override public void Damage(int d, GameObject caster) {
+		base.Damage (d, caster);
+		_hasLifeChanged = true;
+	}
+		
 
 	override public void Fire () {
 		Quaternion rotation = new Quaternion();

@@ -12,7 +12,7 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 	public float _fireDelay;
 	protected float _fireDelayTimer;
 
-	public void Damage(int d, GameObject caster) {
+	public virtual void Damage(int d, GameObject caster) {
 		_life -= d;
 
 		if(_life < 0) {
@@ -22,7 +22,7 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 		}
 	}
 
-	public void Heal(int h) { 
+	public virtual void Heal(int h) { 
 		_life += h; 
 
 		if (_life > _maxLife)
