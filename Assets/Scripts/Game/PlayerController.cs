@@ -6,8 +6,9 @@ public class PlayerController : Spaceship {
 
 	private int _points;
 	public GameObject missilePrefab;
-	public bool _hasWonPoints;
-	public bool _hasLifeChanged;
+	private bool _hasWonPoints;
+	private bool _hasLifeChanged;
+	private bool _isDead; 
 
 	public int points { get { return _points; } }
 	public int life { get { return _life; } }
@@ -19,6 +20,7 @@ public class PlayerController : Spaceship {
 			bool tmp = _hasLifeChanged;
 			_hasLifeChanged = false;
 			return tmp; } }
+	public bool isDead { get { return _isDead; } }
 
 	// Use this for initialization
 	void Start () {
@@ -28,6 +30,7 @@ public class PlayerController : Spaceship {
 		_rotationSpeed = 180;
 		_fireDelayTimer = 0.0f;
 		_fireDelay = 0.2f;
+		_isDead = false;
 	}
 
 	// Update is called once per frame
@@ -67,7 +70,7 @@ public class PlayerController : Spaceship {
 	}
 
 	override public void Explode (GameObject caster) {
-		Destroy (this.gameObject);
+		_isDead = true;
 	}
 
 	override public void Move () {

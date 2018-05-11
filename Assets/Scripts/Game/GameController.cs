@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
+	public GameObject game;
 	public GameObject background;
 	public GameObject asteroidPrefab;
 	public GameObject weakEnemyPrefab;
@@ -41,11 +42,19 @@ public class GameController : MonoBehaviour {
 			_spawnDelayTimer = 0.0f;
 		}
 
+		if (player.isDead)
+			endGame ();
 		if(player.hasWonPoints)
 			gameUI.UpdatePoints (player.points);
 		if(player.hasLifeChanged)
 			gameUI.UpdateLife (player.life);
 		
+	}
+
+	public void endGame() {
+		GlobalData.finalScore = player.points;
+
+		SceneLoader.LoadScene ("EndMenuScene");
 	}
 
 	private void spawnEnemy() {
