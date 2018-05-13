@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EndMenu : MonoBehaviour {
 
+	public GameObject bestScoreObj;
 	public GameObject finalScoreTextObj;
 	private Text finalScoreText;
 
@@ -12,6 +13,12 @@ public class EndMenu : MonoBehaviour {
 	void Start () {
 		finalScoreText = finalScoreTextObj.GetComponent<Text> ();
 		finalScoreText.text = GlobalData.finalScore.ToString();
+
+		if (GlobalData.finalScore > GlobalData.bestScore) {
+			GlobalData.bestScore = GlobalData.finalScore;
+
+			bestScoreObj.SetActive (true);
+		}			
 	}
 	
 	// Update is called once per frame
