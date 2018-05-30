@@ -7,7 +7,6 @@ public class LaserController : Weapon {
 
 	public float _chargingTime = 1.0f;
 	public float _lifeTime = 1.0f;
-	public Vector3 _direction;
 	private bool _casted = false;
 
 	new public void Start() {

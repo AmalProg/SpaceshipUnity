@@ -35,7 +35,7 @@ public class AsteroidController : Enemy {
 				Quaternion rotation = Random.rotationUniform;
 				rotation.eulerAngles = new Vector3 (0, rotation.eulerAngles.y, 90);
 
-				AsteroidController.Spawn (this.gameObject, _size - 1, transform.position, rotation);
+				AsteroidController.Spawn (this.gameObject, transform.position, rotation, _size - 1);
 			}
 		}
 
@@ -48,7 +48,7 @@ public class AsteroidController : Enemy {
 		transform.Translate(_direction * _speed * elaspedTime, Space.World);
 	}
 
-	static public GameObject Spawn(GameObject asteroidParent, int size, Vector3 position, Quaternion rotation,
+	static public GameObject Spawn(GameObject asteroidParent, Vector3 position, Quaternion rotation, int size,
 		float speed = -1, int life = -1, int pointsValue = -1) {
 		GameObject asteroid = Instantiate (asteroidParent, position, rotation);
 		AsteroidController astCtrl = asteroid.GetComponent<AsteroidController> ();

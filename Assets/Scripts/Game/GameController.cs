@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 	public GameObject asteroidPrefab;
 	public GameObject weakEnemyPrefab;
 	public GameObject suicidalEnemyPrefab;
+	public GameObject mediumEnemyPrefab;
 	public GameObject playerObj;
 	public GameObject gameUIObj;
 
@@ -17,6 +18,9 @@ public class GameController : MonoBehaviour {
 
 	public float _spawnDelay;
 	private float _spawnDelayTimer;
+
+	private Dictionary<string, float> _enemySpawnProba = new Dictionary<string, float>(4);
+	private Dictionary<string, GameObject> _enemyNameConverter = new Dictionary<string, GameObject>(4);
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +34,16 @@ public class GameController : MonoBehaviour {
 
 		gameUI.UpdateLife (player.life);
 		gameUI.UpdatePoints (player.points);
+
+		_enemyNameConverter ["asteroid"] = asteroidPrefab;
+		_enemyNameConverter ["weak"] = weakEnemyPrefab;
+		_enemyNameConverter ["suicidal"] = suicidalEnemyPrefab; 
+		_enemyNameConverter ["medium"] = mediumEnemyPrefab; 
+
+		_enemySpawnProba ["asteroid"] = 30;
+		_enemySpawnProba ["weak"] = 30;
+		_enemySpawnProba ["suicidal"] = 30; 
+		_enemySpawnProba ["medium"] = 10; 
 	}
 	
 	// Update is called once per frame
@@ -37,7 +51,7 @@ public class GameController : MonoBehaviour {
 		_spawnDelayTimer += Time.deltaTime;
 
 		if (_spawnDelayTimer > _spawnDelay) {
-			spawnEnemy ();
+			SpawnEnemy ();
 
 			_spawnDelayTimer = 0.0f;
 		}
@@ -57,13 +71,25 @@ public class GameController : MonoBehaviour {
 		SceneLoader.LoadScene ("EndMenuScene");
 	}
 
-	private void spawnEnemy() {
+	private void SpawnEnemy() {
+		int enemyChoiceProb = Random.Range (0, 101);
+		float actualProbMax = 0;
+		foreach (KeyValuePair<string, float> kvp in _enemySpawnProba) {
+			actualProbMax += kvp.Value;
+			if (actualProbMax >= enemyChoiceProb) {
+				GenerateEnemy(kvp.Key);
+				break;
+			}
+		}
+	}
+
+	private void GenerateEnemy(string name) {
 		Collider backgroundCollider = background.GetComponent<Collider> ();
 		Vector3 max = backgroundCollider.bounds.max;
 		Vector3 min = backgroundCollider.bounds.min;
 		Vector3 spawnPosition = new Vector3();
 		int side = Random.Range (0, 4);
-		switch (side) {
+		switch (side) { // choisit le coté du spawn
 		case 0:
 			spawnPosition.x = max.x;
 			spawnPosition.y = 0.5f;
@@ -85,15 +111,25 @@ public class GameController : MonoBehaviour {
 			spawnPosition.z = min.z;
 			break;
 		}
-		Quaternion rotation = Random.rotation;
-		rotation.eulerAngles = new Vector3 (0, rotation.eulerAngles.y, 90);
 
-		int enemyChoice = Random.Range (0, 100);
-		if(enemyChoice < 45)
-			AsteroidController.Spawn(asteroidPrefab, 3, spawnPosition, rotation);
-		else if(enemyChoice < 75)
-			WeakEnemyController.Spawn(weakEnemyPrefab, spawnPosition, rotation);
-		else if(enemyChoice < 101)
-			SuicidalEnemyController.Spawn(suicidalEnemyPrefab, spawnPosition, rotation);
+		Quaternion spawnRotation = Random.rotation;
+		spawnRotation.eulerAngles = new Vector3 (0, spawnRotation.eulerAngles.y, 90);
+
+		switch (name) {
+		case "asteroid":
+			AsteroidController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, 3);
+			break;
+		case "weak":
+			WeakEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
+			break;
+		case "suicidal":
+			SuicidalEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
+			break;
+		case "medium":
+			MediumEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
+			break;
+		default:
+			break;
+		}
 	}
 }

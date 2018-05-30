@@ -40,18 +40,20 @@ public class WeakAI : AI {
 		}
 
 		if (moveChoice < 37) {
-			entity.transform.Rotate (new Vector3 (entity._rotationSpeed * elapsedTime, 0, 0));
+			entity.transform.Rotate (new Vector3 (0, entity._rotationSpeed * elapsedTime, 0), Space.World);
 		} else if (moveChoice < 76) {
-			entity.transform.Rotate (new Vector3 (-entity._rotationSpeed * elapsedTime, 0, 0));
+			entity.transform.Rotate (new Vector3 (0, -entity._rotationSpeed * elapsedTime , 0), Space.World);
 		}
 
-		entity.transform.Translate(0, 0, elapsedTime * entity._speed);
+		entity.transform.Translate(0, -elapsedTime * entity._speed, 0);
 	}
 
 	override public void Fire(SpaceshipEnemy entity, GameObject weapon) {
 		GameObject weaponObj = Object.Instantiate (weapon, entity.transform.position, entity.transform.rotation);
 		weaponObj.layer = 8;
-		weaponObj.GetComponent<Weapon>().SetUser(entity.gameObject);
+		Weapon weaponComponent = weaponObj.GetComponent<Weapon> ();
+		weaponComponent.direction = -entity.transform.up;
+		weaponComponent.SetUser(entity.gameObject);
 	}
 }
 
@@ -71,19 +73,19 @@ public class MediumAI : AI {
 		}
 
 		if (moveChoice < 37) {
-			entity.transform.Rotate (new Vector3 (0, entity._rotationSpeed * elapsedTime, 0));
+			entity.transform.Rotate (new Vector3 (entity._rotationSpeed * elapsedTime, 0, 0));
 		} else if (moveChoice < 76) {
-			entity.transform.Rotate (new Vector3 (0, -entity._rotationSpeed * elapsedTime, 0));
+			entity.transform.Rotate (new Vector3 (-entity._rotationSpeed * elapsedTime, 0, 0));
 		}
 
-		entity.transform.Translate(0, 0, elapsedTime * entity._speed);
+		entity.transform.Translate(elapsedTime * entity._speed, 0, 0);
 	}
 
 	override public void Fire(SpaceshipEnemy entity, GameObject weapon) {
-		Quaternion rotation = entity.transform.rotation;
-		rotation.SetLookRotation(player.transform.position);
-		GameObject weaponObj = Object.Instantiate (weapon, entity.transform.position, rotation);
+		GameObject weaponObj = Object.Instantiate (weapon, entity.transform.position, entity.transform.rotation);
 		weaponObj.layer = 8;
-		weaponObj.GetComponent<Weapon>().SetUser(entity.gameObject);
+		Weapon weaponComponent = weaponObj.GetComponent<Weapon> ();
+		weaponComponent.direction = player.transform.position - entity.transform.position;
+		weaponComponent.SetUser(entity.gameObject);
 	}
 }

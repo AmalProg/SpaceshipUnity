@@ -36,9 +36,7 @@ public class WeakEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Fire () {
-		GameObject missile = Instantiate (missilePrefab, transform.position, transform.rotation);
-		missile.layer = 8;
-		missile.GetComponent<MissileController>().SetUser(this.gameObject);
+		_ai.Fire (this, missilePrefab);
 	}
 
 	new public void Explode (GameObject caster) {
@@ -47,19 +45,5 @@ public class WeakEnemyController : SpaceshipEnemy {
 
 	override public void Move () {
 		_ai.Move (this);
-	}
-  
-	static public GameObject Spawn(GameObject weakParent, Vector3 position, Quaternion rotation,
-		float speed = -1, int life = -1, int pointsValue = -1) {
-		GameObject weak = Instantiate (weakParent, position, rotation);
-		WeakEnemyController ctrl = weak.GetComponent<WeakEnemyController> ();
-		if(speed != -1)
-			ctrl._speed = speed;
-		if(life != -1)
-			ctrl._life = life;
-		if(pointsValue != -1)
-			ctrl._pointsValue = pointsValue;	
-
-		return weak;
 	}
 }

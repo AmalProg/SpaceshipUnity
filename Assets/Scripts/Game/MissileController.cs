@@ -15,11 +15,11 @@ public class MissileController : Weapon, IMoveable {
 	}
 
 	public void Update() {
-		Move(); 
+		Move();
 	}
 
 	public void Move() {
-		transform.Translate(0, 0, _speed * Time.deltaTime);
+		transform.Translate(_direction * _speed * Time.deltaTime, Space.World);
 	}
 
 	public void OnTriggerEnter(Collider other) {

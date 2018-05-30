@@ -30,18 +30,4 @@ public class SuicidalEnemyController : SpaceshipEnemy {
 
 	override public void Fire() {
 	}
-
-	static public GameObject Spawn(GameObject suicidalParent, Vector3 position, Quaternion rotation,
-		float speed = -1, int life = -1, int pointsValue = -1) {
-		GameObject weak = Instantiate (suicidalParent, position, rotation);
-		SuicidalEnemyController ctrl = weak.GetComponent<SuicidalEnemyController> ();
-		if(speed != -1)
-			ctrl._speed = speed;
-		if(life != -1)
-			ctrl._life = life;
-		if(pointsValue != -1)
-			ctrl._pointsValue = pointsValue;	
-
-		return weak;
-	}
 }

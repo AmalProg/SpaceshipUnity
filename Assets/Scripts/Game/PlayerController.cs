@@ -56,17 +56,16 @@ public class PlayerController : Spaceship {
 		_hasLifeChanged = true;
 	}
 		
-
 	override public void Fire () {
-		Quaternion rotation = new Quaternion();
 		Vector3 pos = Input.mousePosition;
 		pos.z = pos.y;
 		pos = Camera.main.ScreenToWorldPoint (pos);
-		pos.y = 0.5f;
-		rotation.SetLookRotation(pos);
-		GameObject missile = Instantiate (missilePrefab, transform.position, rotation);
+		pos.y = transform.position.y;
+		GameObject missile = Instantiate (missilePrefab, transform.position, new Quaternion());
 		missile.layer = 9;
-		missile.GetComponent<MissileController>().SetUser(this.gameObject);
+		MissileController missileComponent = missile.GetComponent<MissileController> ();
+		missileComponent.direction = pos - transform.position;
+		missileComponent.SetUser(this.gameObject);
 	}
 
 	override public void Explode (GameObject caster) {
@@ -82,6 +81,6 @@ public class PlayerController : Spaceship {
 			propulsion = 0;
 
 		transform.Translate(0, 0, propulsion * elapsedTime * _speed);
-		transform.Rotate(0, Input.GetAxis ("Horizontal") * elapsedTime * _rotationSpeed, 0);
+		transform.Rotate(0, Input.GetAxis ("Horizontal") * elapsedTime * _rotationSpeed, 0, Space.World);
 	}
 }
