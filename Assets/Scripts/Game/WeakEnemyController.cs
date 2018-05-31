@@ -6,12 +6,14 @@ public class WeakEnemyController : SpaceshipEnemy {
 
 	private AI _ai;
 	public GameObject missilePrefab;
+	private GameObject _missile;
 
 	// Use this for initialization
 	new void Start () {
 		base.Start ();
 
 		_ai = new WeakAI ();
+
 		_maxLife = 50;
 		_life = _maxLife;
 		_rotationSpeed = 60;
@@ -36,7 +38,7 @@ public class WeakEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Fire () {
-		_ai.Fire (this, missilePrefab);
+		_ai.Fire (this, _missile);
 	}
 
 	new public void Explode (GameObject caster) {
