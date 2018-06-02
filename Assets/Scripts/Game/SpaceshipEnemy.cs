@@ -8,7 +8,9 @@ public abstract class SpaceshipEnemy : Spaceship {
 	protected string _name;
 	protected int _pointsValue;
 
-	protected void Start() { 
+	new protected void Start() { 
+		base.Start();
+		
 		gameObject.layer = 8;
 	}
 

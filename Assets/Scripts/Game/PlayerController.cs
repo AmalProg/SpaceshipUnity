@@ -8,7 +8,7 @@ public class PlayerController : Spaceship {
 	public GameObject missilePrefab;
 	private bool _hasWonPoints;
 	private bool _hasLifeChanged;
-	private bool _isDead; 
+	private bool _isDead;
 
 	public int points { get { return _points; } }
 	public int life { get { return _life; } }
@@ -23,7 +23,9 @@ public class PlayerController : Spaceship {
 	public bool isDead { get { return _isDead; } }
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
+		base.Start();
+
 		_maxLife = 100;
 		_life = _maxLife;
 		_speed = 8.0f;
@@ -54,6 +56,7 @@ public class PlayerController : Spaceship {
 	override public void Damage(int d, GameObject caster) {
 		base.Damage (d, caster);
 		_hasLifeChanged = true;
+		_lifeUI.LifeChanged(_life, _maxLife);
 	}
 		
 	override public void Fire () {
@@ -77,7 +80,7 @@ public class PlayerController : Spaceship {
 
 		float propulsion = Input.GetAxis ("Vertical");
 
-		if (propulsion < 0)
+		if (propulsion < 0) // on en peux pas reculer
 			propulsion = 0;
 
 		transform.Translate(0, 0, propulsion * elapsedTime * _speed);
