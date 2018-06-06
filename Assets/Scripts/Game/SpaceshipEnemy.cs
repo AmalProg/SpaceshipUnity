@@ -7,6 +7,9 @@ public abstract class SpaceshipEnemy : Spaceship {
 
 	protected string _name;
 	protected int _pointsValue;
+	protected Vector3 _fireDirection;
+
+	public Vector3 fireDirection { get { return _fireDirection; } set { _fireDirection = value; } }
 
 	new protected void Start() { 
 		base.Start();
@@ -15,8 +18,8 @@ public abstract class SpaceshipEnemy : Spaceship {
 	}
 
 	override public void Explode (GameObject caster) {
-		caster.SendMessage ("AddPoints", _pointsValue);
 		Destroy(this.gameObject);
+		caster.SendMessage ("AddPoints", _pointsValue);
 	}
 
 	protected void switchMapSide(Collider other) {

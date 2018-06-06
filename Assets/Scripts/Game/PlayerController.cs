@@ -9,6 +9,7 @@ public class PlayerController : Spaceship {
 	private bool _hasWonPoints;
 	private bool _hasLifeChanged;
 	private bool _isDead;
+	private int _level;
 
 	public int points { get { return _points; } }
 	public int life { get { return _life; } }
@@ -33,6 +34,7 @@ public class PlayerController : Spaceship {
 		_fireDelayTimer = 0.0f;
 		_fireDelay = 0.2f;
 		_isDead = false;
+		_level = 1;
 	}
 
 	// Update is called once per frame
@@ -48,6 +50,10 @@ public class PlayerController : Spaceship {
 		}
 	}
 
+	public void Evolve() {
+		_level++;
+	}
+
 	public void AddPoints(int pts) {
 		_points += pts;
 		_hasWonPoints = true;
@@ -56,18 +62,35 @@ public class PlayerController : Spaceship {
 	override public void Damage(int d, GameObject caster) {
 		base.Damage (d, caster);
 		_hasLifeChanged = true;
-		_lifeUI.LifeChanged(_life, _maxLife);
 	}
 		
 	override public void Fire () {
-		Vector3 pos = Input.mousePosition;
-		pos.z = pos.y;
-		pos = Camera.main.ScreenToWorldPoint (pos);
-		pos.y = transform.position.y;
-		GameObject missile = Instantiate (missilePrefab, transform.position, new Quaternion());
+		Vector3 pos = transform.position;
+		Vector3 focus = Input.mousePosition;// + transform.position - from; // les différent tir ne vont pas sur le pointeur de la souris
+		focus.z = focus.y;
+		focus = Camera.main.ScreenToWorldPoint (focus);
+		focus.y = transform.position.y;
+		Fire (focus, pos);
+
+		if (_level >= 2) {
+			Vector3 normalFocus = Vector3.Cross (focus - pos, Vector3.up).normalized;
+
+			Vector3 focus2 = Vector3.Slerp (focus, normalFocus, 0.08f);
+			Fire (focus2, transform.position + normalFocus * 0.2f);
+		}
+		if (_level >= 3) {
+			Vector3 normalFocus = -Vector3.Cross (focus - pos, Vector3.up).normalized;
+
+			Vector3 focus2 = Vector3.Slerp (focus, normalFocus, 0.08f);
+			Fire (focus2, transform.position + normalFocus * 0.2f);
+		}
+	}
+
+	private void Fire(Vector3 focus, Vector3 from) {
+		GameObject missile = Instantiate (missilePrefab, from, new Quaternion());
 		missile.layer = 9;
 		MissileController missileComponent = missile.GetComponent<MissileController> ();
-		missileComponent.direction = pos - transform.position;
+		missileComponent.direction = focus - from;
 		missileComponent.SetUser(this.gameObject);
 	}
 

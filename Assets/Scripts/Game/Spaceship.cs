@@ -15,15 +15,19 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 	protected LifeUi _lifeUI;
 
 	protected void Start() {
-		GameObject lifeUIObj = Instantiate(lifeUIPrefab, transform);
+		GameObject lifeUIObj = Instantiate(lifeUIPrefab, GameController.lifeUICanvas.transform);
 		_lifeUI = lifeUIObj.GetComponent<LifeUi>();
 		_lifeUI.SetParent(this.gameObject);
 	}
 
 	public virtual void Damage(int d, GameObject caster) {
+		
 		_life -= d;
 
-		if(_life < 0) {
+		if(_lifeUI)
+			_lifeUI.LifeChanged(_life, _maxLife);
+
+		if(_life <= 0) {
 			_life = 0;
 
 			Explode(caster);
@@ -40,4 +44,9 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 	public abstract void Fire ();
 	public abstract void Explode (GameObject caster);
 	public abstract void Move ();
+
+	void OnDestroy() {
+		if(_lifeUI)
+			Destroy (_lifeUI.gameObject);
+	}
 }

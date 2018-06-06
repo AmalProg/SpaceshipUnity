@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
+	static public GameObject lifeUICanvas;
+
 	public GameObject game;
 	public GameObject background;
 	public GameObject asteroidPrefab;
@@ -19,13 +21,24 @@ public class GameController : MonoBehaviour {
 	public float _spawnDelay;
 	private float _spawnDelayTimer;
 
-	private Dictionary<string, float> _enemySpawnProba = new Dictionary<string, float>(4);
+	public float _evolveDelay;
+	private float _evolveDelayTimer;
+
+	private Dictionary<string, int> _enemySpawnProba = new Dictionary<string, int>(4);
 	private Dictionary<string, GameObject> _enemyNameConverter = new Dictionary<string, GameObject>(4);
+	private Dictionary<string, Dictionary<string, float>> _enemyStatsAverage = new Dictionary<string, Dictionary<string, float>>;
+
+	void Awake() {
+		lifeUICanvas = GameObject.Find ("LifeUI");
+	}
 
 	// Use this for initialization
 	void Start () {
 		_spawnDelay = 2.0f;
 		_spawnDelayTimer = _spawnDelay;
+
+		_evolveDelay = 60f;
+		_spawnDelayTimer = 0f;
 
 		player = playerObj.GetComponent<PlayerController> ();
 		gameUI = gameUIObj.GetComponent<GameUI> ();
@@ -44,6 +57,14 @@ public class GameController : MonoBehaviour {
 		_enemySpawnProba ["weak"] = 30;
 		_enemySpawnProba ["suicidal"] = 30; 
 		_enemySpawnProba ["medium"] = 10; 
+
+		_enemyStatsAverage ["asteroid"] = Dictionary<string, float>;
+		_enemyStatsAverage ["asteroid"] ["speed"] = 0;
+		_enemyStatsAverage ["asteroid"] ["life"] = 0;
+		_enemyStatsAverage ["asteroid"] ["pointValue"] = 0;
+		_enemyStatsAverage ["weak"] = Dictionary<string, float>;
+		_enemyStatsAverage ["suicidal"] = Dictionary<string, float>; 
+		_enemyStatsAverage ["medium"] = Dictionary<string, float>; 
 	}
 	
 	// Update is called once per frame
@@ -62,7 +83,13 @@ public class GameController : MonoBehaviour {
 			gameUI.UpdatePoints (player.points);
 		if(player.hasLifeChanged)
 			gameUI.UpdateLife (player.life);
-		
+
+		_evolveDelayTimer += Time.deltaTime;
+		if (_evolveDelayTimer > _evolveDelay) {
+			player.Evolve ();
+
+			_evolveDelayTimer = 0f;
+		}
 	}
 
 	public void endGame() {
@@ -72,9 +99,14 @@ public class GameController : MonoBehaviour {
 	}
 
 	private void SpawnEnemy() {
-		int enemyChoiceProb = Random.Range (0, 101);
-		float actualProbMax = 0;
-		foreach (KeyValuePair<string, float> kvp in _enemySpawnProba) {
+		int randMax = 0;
+		foreach (KeyValuePair<string, int> kvp in _enemySpawnProba) {
+			randMax += kvp.Value;
+		}
+
+		int enemyChoiceProb = Random.Range (0, randMax + 1);
+		int actualProbMax = 0;
+		foreach (KeyValuePair<string, int> kvp in _enemySpawnProba) {
 			actualProbMax += kvp.Value;
 			if (actualProbMax >= enemyChoiceProb) {
 				GenerateEnemy(kvp.Key);
@@ -113,19 +145,27 @@ public class GameController : MonoBehaviour {
 		}
 
 		Quaternion spawnRotation = Random.rotation;
-		spawnRotation.eulerAngles = new Vector3 (0, spawnRotation.eulerAngles.y, 90);
+
+		int size;
+		float speed;
+		int life;
+		int pointValue; 
 
 		switch (name) {
 		case "asteroid":
+			spawnRotation.eulerAngles = new Vector3 (0, 0, 90);
 			AsteroidController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, 3);
 			break;
 		case "weak":
+			spawnRotation.eulerAngles = new Vector3 (0, 0, 90);
 			WeakEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
 			break;
 		case "suicidal":
+			spawnRotation.eulerAngles = new Vector3 (0, 0, 90);
 			SuicidalEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
 			break;
 		case "medium":
+			spawnRotation.eulerAngles = new Vector3 (90, 0, 0);
 			MediumEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
 			break;
 		default:

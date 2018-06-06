@@ -11,6 +11,7 @@ public class SuicidalEnemyController : SpaceshipEnemy {
 
 		_ai = new SuicidalAI();
 		_life = 20;
+		_maxLife = _life;
 		_speed = 3.0f;
 		_pointsValue = 400;
 		_name = "Suicidal enemy";

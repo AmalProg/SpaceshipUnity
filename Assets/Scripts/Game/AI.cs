@@ -8,19 +8,26 @@ public abstract class AI {
 
 	public abstract void Move(SpaceshipEnemy entity);
 	public abstract void Fire(SpaceshipEnemy entity, GameObject weapon);
+	public abstract void UpdateFireDirection (SpaceshipEnemy entity);
 }
 
 public class SuicidalAI : AI {
 	override public void Move(SpaceshipEnemy entity) {
 		float elapsedTime = Time.deltaTime;
-		float angle = Vector3.Angle(entity.transform.forward, player.transform.position - entity.transform.position);
+		Vector3 playerDir = player.transform.position - entity.transform.position;
+		float angle = Vector3.Angle(entity.transform.forward, playerDir);
+		Vector3 cross = Vector3.Cross (entity.transform.forward, playerDir);
+		if (cross.y < 0)
+			angle *= -1;
 		entity.transform.Rotate(angle * elapsedTime, 0, 0);
 
 		entity.transform.Translate(0, 0, elapsedTime * entity._speed);
 	}
 
 	override public void Fire(SpaceshipEnemy entity, GameObject weapon) {
+	}
 
+	override public void UpdateFireDirection (SpaceshipEnemy entity) {
 	}
 }
 
@@ -55,6 +62,10 @@ public class WeakAI : AI {
 		weaponComponent.direction = -entity.transform.up;
 		weaponComponent.SetUser(entity.gameObject);
 	}
+
+	override public void UpdateFireDirection (SpaceshipEnemy entity) {
+		entity.fireDirection = -entity.transform.up;
+	}
 }
 
 public class MediumAI : AI {
@@ -73,9 +84,9 @@ public class MediumAI : AI {
 		}
 
 		if (moveChoice < 37) {
-			entity.transform.Rotate (new Vector3 (entity._rotationSpeed * elapsedTime, 0, 0));
+			entity.transform.Rotate (new Vector3 (0, 0, entity._rotationSpeed * elapsedTime));
 		} else if (moveChoice < 76) {
-			entity.transform.Rotate (new Vector3 (-entity._rotationSpeed * elapsedTime, 0, 0));
+			entity.transform.Rotate (new Vector3 (0, 0, -entity._rotationSpeed * elapsedTime));
 		}
 
 		entity.transform.Translate(elapsedTime * entity._speed, 0, 0);
@@ -87,5 +98,9 @@ public class MediumAI : AI {
 		Weapon weaponComponent = weaponObj.GetComponent<Weapon> ();
 		weaponComponent.direction = player.transform.position - entity.transform.position;
 		weaponComponent.SetUser(entity.gameObject);
+	}
+
+	override public void UpdateFireDirection (SpaceshipEnemy entity) {
+		entity.fireDirection = player.transform.position - entity.transform.position;
 	}
 }

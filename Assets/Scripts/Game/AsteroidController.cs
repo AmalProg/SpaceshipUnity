@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using nInterfaces;
 
-public class AsteroidController : Enemy {
+public class AsteroidController : SpaceshipEnemy {
 
-	public float _speed;
-	private int _maxLife;
 	public int _size;
 	private int _nbrChild;
 	private Vector3 _direction;
@@ -38,9 +36,9 @@ public class AsteroidController : Enemy {
 				AsteroidController.Spawn (this.gameObject, transform.position, rotation, _size - 1);
 			}
 		}
-
-		caster.SendMessage ("AddPoints", _pointsValue);
+			
 		Destroy(this.gameObject);
+		caster.SendMessage ("AddPoints", _pointsValue);
 	}
 
 	override public void Move() {
@@ -57,5 +55,8 @@ public class AsteroidController : Enemy {
 		asteroid.transform.localScale = new Vector3 (scale.x * size / 3, scale.y * size / 3, scale.z * size / 3);
 	
 		return asteroid;
+	}
+
+	override public void Fire() {
 	}
 }

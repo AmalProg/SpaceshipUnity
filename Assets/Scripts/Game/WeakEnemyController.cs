@@ -6,7 +6,6 @@ public class WeakEnemyController : SpaceshipEnemy {
 
 	private AI _ai;
 	public GameObject missilePrefab;
-	private GameObject _missile;
 
 	// Use this for initialization
 	new void Start () {
@@ -38,7 +37,7 @@ public class WeakEnemyController : SpaceshipEnemy {
 	}
 
 	override public void Fire () {
-		_ai.Fire (this, _missile);
+		_ai.Fire (this, missilePrefab);
 	}
 
 	new public void Explode (GameObject caster) {

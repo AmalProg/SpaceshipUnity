@@ -6,6 +6,7 @@ public class MediumEnemyController : SpaceshipEnemy {
 
 	public GameObject missilePrefab;
 	private AI _ai;
+	public GameObject _missileLauncher;
 
 	// Use this for initialization
 	new void Start () {
@@ -28,6 +29,14 @@ public class MediumEnemyController : SpaceshipEnemy {
 		_fireDelayTimer += Time.deltaTime;
 
 		Move ();
+
+		_ai.UpdateFireDirection (this);
+		float angle = Vector3.Angle (-_missileLauncher.transform.forward, _fireDirection);
+		Vector3 cross = Vector3.Cross (-_missileLauncher.transform.forward, _fireDirection);
+		if (cross.y < 0)
+			angle *= -1;
+			
+		_missileLauncher.transform.RotateAround(transform.position, Vector3.up, angle);
 
 		if (_fireDelayTimer >= _fireDelay) {
 			Fire ();
