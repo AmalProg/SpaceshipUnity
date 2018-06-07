@@ -47,11 +47,11 @@ public abstract class SpaceshipEnemy : Spaceship {
 	}
 
 	static public GameObject Spawn(GameObject parent, Vector3 position, Quaternion rotation,
-		float speed = -1, int life = -1, int pointsValue = -1) {
+		int speed = -1, int life = -1, int pointsValue = -1) {
 		GameObject spac = Instantiate (parent, position, rotation);
 		SpaceshipEnemy ctrl = spac.GetComponent<SpaceshipEnemy> ();
 		if(speed != -1)
-			ctrl._speed = speed;
+			ctrl._speed = speed / 100.0f;
 		if(life != -1)
 			ctrl._life = life;
 		if(pointsValue != -1)

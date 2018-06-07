@@ -2,27 +2,27 @@
 <EnemiesStats>
 	<Enemy type="asteroid">
 		<Prob>30</Prob>
-		<Stat name="Size"></Stat>
-		<Stat name="Speed"></Stat>
-		<Stat name="Life"></Stat>
-		<Stat name="PointValue"></Stat>
+		<Stat name="size">3</Stat>
+		<Stat name="speed">2</Stat>
+		<Stat name="life">40</Stat>
+		<Stat name="pointValue">300</Stat>
 	</Enemy>
 	<Enemy type="weak">
 		<Prob>30</Prob>
-		<Stat name="Speed"></Stat>
-		<Stat name="Life"></Stat>
-		<Stat name="PointValue"></Stat>	
+		<Stat name="speed">4</Stat>
+		<Stat name="life">50</Stat>
+		<Stat name="pointValue">500</Stat>	
 	</Enemy>
 	<Enemy type="suicidal">
 		<Prob>30</Prob>
-		<Stat name="Speed"></Stat>
-		<Stat name="Life"></Stat>
-		<Stat name="PointValue"></Stat>	
+		<Stat name="speed">8</Stat>
+		<Stat name="life">20</Stat>
+		<Stat name="pointValue">400</Stat>	
 	</Enemy>
 	<Enemy type="medium">
 		<Prob>10</Prob>
-		<Stat name="Speed"></Stat>
-		<Stat name="Life"></Stat>
-		<Stat name="PointValue"></Stat>	
+		<Stat name="speed">6</Stat>
+		<Stat name="life">70</Stat>
+		<Stat name="pointValue">1000</Stat>	
 	</Enemy>
 </EnemiesStats>

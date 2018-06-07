@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
+using System.Globalization;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
@@ -26,7 +28,8 @@ public class GameController : MonoBehaviour {
 
 	private Dictionary<string, int> _enemySpawnProba = new Dictionary<string, int>(4);
 	private Dictionary<string, GameObject> _enemyNameConverter = new Dictionary<string, GameObject>(4);
-	private Dictionary<string, Dictionary<string, float>> _enemyStatsAverage = new Dictionary<string, Dictionary<string, float>>;
+	private Dictionary<string, Dictionary<string, int>> _enemyStatsAverage = new Dictionary<string, Dictionary<string, int>>(4);
+	private Dictionary<string, float> _randomPercentByStat = new Dictionary<string, float>();
 
 	void Awake() {
 		lifeUICanvas = GameObject.Find ("LifeUI");
@@ -55,21 +58,29 @@ public class GameController : MonoBehaviour {
 
 		XmlDocument doc = new XmlDocument();
 		try { // charge les stats de base des enemis via un fichier xml
-			doc.load ("\Assets\Datas\EnemiesStats.xml");
-			foreach(XmlNode enemyNode in doc.SelectNode("/EnemiesStats/Enemy")) {
-				String enemyType = enemyNode.Attributes["type"]?.Value;
-				_enemyStatsAverage [enemyType] = Dictionary<string, float>;
-				foreach(XmlNode enemyStat in enemyType.SelectNodes("/Stat")) {
-					float statValue = float.Parse(enemyStat.InnerText, CultureInfo.InvariantCulture.NumberFormat);
-					_enemyStatsAverage [enemyType] [enemyStat.Attributes["name"]?.Value] = statValue;
+			doc.Load ("./Assets/Datas/EnemiesStats.xml");
+			foreach(XmlNode enemyNode in doc.SelectNodes("/EnemiesStats/Enemy")) {
+				string enemyType = enemyNode.Attributes["type"].Value;
+				_enemyStatsAverage[enemyType] = new Dictionary<string, int>();
+				foreach(XmlNode enemyStat in enemyNode.SelectNodes("Stat")) {
+					int statValue = int.Parse(enemyStat.InnerText, CultureInfo.InvariantCulture.NumberFormat);
+					_enemyStatsAverage [enemyType] [enemyStat.Attributes["name"].Value] = statValue;
 				}
-				float probValue = float.Parse(enemyType.SelectSingleNode("/Prob")?.Value, CultureInfo.InvariantCulture.NumberFormat);
-				_enemySpawnProba [enemyType] = probValue);
+				int probValue = int.Parse(enemyNode.SelectSingleNode("Prob").InnerText, CultureInfo.InvariantCulture.NumberFormat);
+				_enemySpawnProba [enemyType] = probValue;
+			}
+			foreach(KeyValuePair<string, Dictionary<string, int>> kvp in _enemyStatsAverage) {
+				Debug.Log(kvp.Key);
 			}
 		}
 		catch(System.IO.FileNotFoundException) {
 			doc.LoadXml("");
 		}
+
+		_randomPercentByStat ["size"] = 0.3f;
+		_randomPercentByStat ["speed"] = 0.2f;
+		_randomPercentByStat ["life"] = 0.6f;
+		_randomPercentByStat ["pointValue"] = 0.4f;
 	}
 	
 	// Update is called once per frame
@@ -151,35 +162,38 @@ public class GameController : MonoBehaviour {
 
 		Quaternion spawnRotation = Random.rotation;
 
-		int size;
-		float speed;
-		int life;
-		int pointValue; 
+		Dictionary<string, int> stats = new Dictionary<string, int>();
+		foreach (KeyValuePair<string, int> kvp in _enemyStatsAverage[name]) {
+			stats [kvp.Key] = RandomizeStat (kvp.Value, _randomPercentByStat[kvp.Key]);
+		}
 
 		switch (name) {
 		case "asteroid":
-			foreach(KeyValuePair<string, float> kvp in _enemyStatsAverage["asteroid"])
 			spawnRotation.eulerAngles = new Vector3 (0, 0, 90);
-			AsteroidController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, 3);
+			AsteroidController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, stats["size"], stats["speed"]
+				, stats["life"], stats["pointValue"]);
 			break;
 		case "weak":
 			spawnRotation.eulerAngles = new Vector3 (0, 0, 90);
-			WeakEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
+			WeakEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, stats["speed"]
+				, stats["life"], stats["pointValue"]);
 			break;
 		case "suicidal":
 			spawnRotation.eulerAngles = new Vector3 (0, 0, 90);
-			SuicidalEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
+			SuicidalEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, stats["speed"]
+				, stats["life"], stats["pointValue"]);
 			break;
 		case "medium":
 			spawnRotation.eulerAngles = new Vector3 (90, 0, 0);
-			MediumEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation);
+			MediumEnemyController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, stats["speed"]
+				, stats["life"], stats["pointValue"]);
 			break;
 		default:
 			break;
 		}
 	}
 
-	private float RandomizeStat(float baseValue, float percentage) {
-
+	private int RandomizeStat(int baseValue, float percentage) {
+		return (int)Random.Range(baseValue - baseValue * percentage / 2, baseValue + baseValue * percentage / 2);
 	}
 }
