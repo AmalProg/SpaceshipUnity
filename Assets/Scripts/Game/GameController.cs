@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,25 +46,30 @@ public class GameController : MonoBehaviour {
 		AI.player = playerObj;
 
 		gameUI.UpdateLife (player.life);
-		gameUI.UpdatePoints (player.points);
+		gameUI.UpdatePoints (player.points);			
 
 		_enemyNameConverter ["asteroid"] = asteroidPrefab;
 		_enemyNameConverter ["weak"] = weakEnemyPrefab;
 		_enemyNameConverter ["suicidal"] = suicidalEnemyPrefab; 
 		_enemyNameConverter ["medium"] = mediumEnemyPrefab; 
 
-		_enemySpawnProba ["asteroid"] = 30;
-		_enemySpawnProba ["weak"] = 30;
-		_enemySpawnProba ["suicidal"] = 30; 
-		_enemySpawnProba ["medium"] = 10; 
-
-		_enemyStatsAverage ["asteroid"] = Dictionary<string, float>;
-		_enemyStatsAverage ["asteroid"] ["speed"] = 0;
-		_enemyStatsAverage ["asteroid"] ["life"] = 0;
-		_enemyStatsAverage ["asteroid"] ["pointValue"] = 0;
-		_enemyStatsAverage ["weak"] = Dictionary<string, float>;
-		_enemyStatsAverage ["suicidal"] = Dictionary<string, float>; 
-		_enemyStatsAverage ["medium"] = Dictionary<string, float>; 
+		XmlDocument doc = new XmlDocument();
+		try { // charge les stats de base des enemis via un fichier xml
+			doc.load ("\Assets\Datas\EnemiesStats.xml");
+			foreach(XmlNode enemyNode in doc.SelectNode("/EnemiesStats/Enemy")) {
+				String enemyType = enemyNode.Attributes["type"]?.Value;
+				_enemyStatsAverage [enemyType] = Dictionary<string, float>;
+				foreach(XmlNode enemyStat in enemyType.SelectNodes("/Stat")) {
+					float statValue = float.Parse(enemyStat.InnerText, CultureInfo.InvariantCulture.NumberFormat);
+					_enemyStatsAverage [enemyType] [enemyStat.Attributes["name"]?.Value] = statValue;
+				}
+				float probValue = float.Parse(enemyType.SelectSingleNode("/Prob")?.Value, CultureInfo.InvariantCulture.NumberFormat);
+				_enemySpawnProba [enemyType] = probValue);
+			}
+		}
+		catch(System.IO.FileNotFoundException) {
+			doc.LoadXml("");
+		}
 	}
 	
 	// Update is called once per frame
@@ -153,6 +158,7 @@ public class GameController : MonoBehaviour {
 
 		switch (name) {
 		case "asteroid":
+			foreach(KeyValuePair<string, float> kvp in _enemyStatsAverage["asteroid"])
 			spawnRotation.eulerAngles = new Vector3 (0, 0, 90);
 			AsteroidController.Spawn (_enemyNameConverter [name], spawnPosition, spawnRotation, 3);
 			break;
@@ -171,5 +177,9 @@ public class GameController : MonoBehaviour {
 		default:
 			break;
 		}
+	}
+
+	private float RandomizeStat(float baseValue, float percentage) {
+
 	}
 }
