@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using nInterfaces;
 
 public class PlayerController : Spaceship {
 
@@ -35,6 +36,7 @@ public class PlayerController : Spaceship {
 		_fireDelay = 0.2f;
 		_isDead = false;
 		_level = 1;
+		_hitDamage = 75;
 	}
 
 	// Update is called once per frame
@@ -108,5 +110,12 @@ public class PlayerController : Spaceship {
 
 		transform.Translate(0, 0, propulsion * elapsedTime * _speed);
 		transform.Rotate(0, Input.GetAxis ("Horizontal") * elapsedTime * _rotationSpeed, 0, Space.World);
+	}
+
+	public void OnTriggerEnter(Collider other) {
+		if (other.CompareTag ("Enemy")) {
+			other.gameObject.GetComponent<IDamageable>().Damage(_hitDamage, this.gameObject);
+			Damage (other.gameObject.GetComponent<Spaceship> ()._hitDamage, other.gameObject);
+		}
 	}
 }

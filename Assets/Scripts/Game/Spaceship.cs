@@ -9,15 +9,20 @@ public abstract class Spaceship : MonoBehaviour, IDamageable, IHealable, IMoveab
 	public float _rotationSpeed;
 	public int _life;
 	public int _maxLife;
+	public int _hitDamage;
 	public float _fireDelay;
 	protected float _fireDelayTimer;
 	public GameObject lifeUIPrefab;
 	protected LifeUi _lifeUI;
 
+
+
 	protected void Start() {
 		GameObject lifeUIObj = Instantiate(lifeUIPrefab, GameController.lifeUICanvas.transform);
 		_lifeUI = lifeUIObj.GetComponent<LifeUi>();
 		_lifeUI.SetParent(this.gameObject);
+
+		_hitDamage = 20;
 	}
 
 	public virtual void Damage(int d, GameObject caster) {

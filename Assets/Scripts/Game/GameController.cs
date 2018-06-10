@@ -26,6 +26,9 @@ public class GameController : MonoBehaviour {
 	public float _evolveDelay;
 	private float _evolveDelayTimer;
 
+	public float _averageStatUpDelay;
+	private float _averageStatUpDelayTimer;
+
 	private Dictionary<string, int> _enemySpawnProba = new Dictionary<string, int>(4);
 	private Dictionary<string, GameObject> _enemyNameConverter = new Dictionary<string, GameObject>(4);
 	private Dictionary<string, Dictionary<string, int>> _enemyStatsAverage = new Dictionary<string, Dictionary<string, int>>(4);
@@ -42,6 +45,9 @@ public class GameController : MonoBehaviour {
 
 		_evolveDelay = 60f;
 		_spawnDelayTimer = 0f;
+
+		_averageStatUpDelay = 10f;
+		_averageStatUpDelayTimer = 0.0f;
 
 		player = playerObj.GetComponent<PlayerController> ();
 		gameUI = gameUIObj.GetComponent<GameUI> ();
@@ -68,9 +74,6 @@ public class GameController : MonoBehaviour {
 				}
 				int probValue = int.Parse(enemyNode.SelectSingleNode("Prob").InnerText, CultureInfo.InvariantCulture.NumberFormat);
 				_enemySpawnProba [enemyType] = probValue;
-			}
-			foreach(KeyValuePair<string, Dictionary<string, int>> kvp in _enemyStatsAverage) {
-				Debug.Log(kvp.Key);
 			}
 		}
 		catch(System.IO.FileNotFoundException) {
@@ -105,6 +108,13 @@ public class GameController : MonoBehaviour {
 			player.Evolve ();
 
 			_evolveDelayTimer = 0f;
+		}
+
+		_averageStatUpDelayTimer += Time.deltaTime;
+		if (_averageStatUpDelayTimer > _averageStatUpDelay) {
+			AverageStatsUp ();
+
+			_averageStatUpDelayTimer = 0f;
 		}
 	}
 
@@ -195,5 +205,14 @@ public class GameController : MonoBehaviour {
 
 	private int RandomizeStat(int baseValue, float percentage) {
 		return (int)Random.Range(baseValue - baseValue * percentage / 2, baseValue + baseValue * percentage / 2);
+	}
+
+	private void AverageStatsUp() {
+		foreach (string enemyName in _enemyStatsAverage.Keys) {
+			List<string> keyStatsNameList = new List<string> (_enemyStatsAverage[enemyName].Keys);
+			foreach (string statsName in keyStatsNameList) {
+				_enemyStatsAverage[enemyName][statsName] = (int)(_enemyStatsAverage[enemyName][statsName] * 1.04f);
+			}
+		}
 	}
 }

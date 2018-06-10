@@ -24,7 +24,7 @@ public class MissileController : Weapon, IMoveable {
 
 	public void OnTriggerEnter(Collider other) {
 		if(other != null) {
-			if (other.gameObject.layer != 10 && !other.CompareTag("Weapon")) { //"Map"
+			if (other.gameObject.layer != 10 && !other.CompareTag("Weapon")) { //layer10 : "Map"
 
 				other.gameObject.GetComponent<IDamageable>().Damage(_damage, _user);
 
