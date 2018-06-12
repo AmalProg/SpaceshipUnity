@@ -79,12 +79,14 @@ public class PlayerController : Spaceship {
 
 			Vector3 focus2 = Vector3.Slerp (focus, normalFocus, 0.08f);
 			Fire (focus2, transform.position + normalFocus * 0.2f);
+			Debug.DrawLine(transform.position + normalFocus * 0.2f, focus2, Color.red, 0.3f, false); 
 		}
 		if (_level >= 3) {
 			Vector3 normalFocus = -Vector3.Cross (focus - pos, Vector3.up).normalized;
 
 			Vector3 focus2 = Vector3.Slerp (focus, normalFocus, 0.08f);
 			Fire (focus2, transform.position + normalFocus * 0.2f);
+			Debug.DrawLine(transform.position + normalFocus * 0.2f, focus2, Color.green, 0.3f, false); 
 		}
 	}
 

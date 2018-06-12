@@ -22,6 +22,8 @@ public class GameController : MonoBehaviour {
 
 	public float _spawnDelay;
 	private float _spawnDelayTimer;
+	public float _difficultyUpDelay;
+	private float _difficultyUpDelayTimer;
 
 	public float _evolveDelay;
 	private float _evolveDelayTimer;
@@ -40,8 +42,11 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_spawnDelay = 2.0f;
+		_spawnDelay = 5.0f;
 		_spawnDelayTimer = _spawnDelay;
+
+		_difficultyUpDelay = 20.0f;
+		_difficultyUpDelayTimer = 0.0f;
 
 		_evolveDelay = 60f;
 		_spawnDelayTimer = 0f;
@@ -89,6 +94,16 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		_spawnDelayTimer += Time.deltaTime;
+		_difficultyUpDelayTimer += Time.deltaTime;
+
+		_evolveDelayTimer += Time.deltaTime;
+		_averageStatUpDelayTimer += Time.deltaTime;
+
+		if (_difficultyUpDelayTimer > _difficultyUpDelay && _spawnDelay > 1.0f) {
+			_spawnDelay -= 0.5f;
+
+			_difficultyUpDelayTimer = 0.0f;
+		}
 
 		if (_spawnDelayTimer > _spawnDelay) {
 			SpawnEnemy ();
@@ -103,14 +118,12 @@ public class GameController : MonoBehaviour {
 		if(player.hasLifeChanged)
 			gameUI.UpdateLife (player.life);
 
-		_evolveDelayTimer += Time.deltaTime;
 		if (_evolveDelayTimer > _evolveDelay) {
 			player.Evolve ();
 
 			_evolveDelayTimer = 0f;
 		}
 
-		_averageStatUpDelayTimer += Time.deltaTime;
 		if (_averageStatUpDelayTimer > _averageStatUpDelay) {
 			AverageStatsUp ();
 
