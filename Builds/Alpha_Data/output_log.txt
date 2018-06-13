@@ -17,16 +17,16 @@ Platform assembly: D:\Documents\Spaceship\Builds\Alpha_Data\Managed\UnityEngine.
 Loading D:\Documents\Spaceship\Builds\Alpha_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Documents\Spaceship\Builds\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading D:\Documents\Spaceship\Builds\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.019 seconds
+- Completed reload, in  0.020 seconds
 Platform assembly: D:\Documents\Spaceship\Builds\Alpha_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Documents\Spaceship\Builds\Alpha_Data\Managed\System.dll (this message is harmless)
 desktop: 1680x1050 60Hz; virtual: 1680x1050 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.147201 ms
+UnloadTime: 1.692481 ms
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: d04 -> priority: 1 
+  Thread -> id: 43c -> priority: 1 
 Cooking::cookConvexMesh: user-provided hull must have less than 256 vertices!
  
 (Filename: ..\..\PhysXCooking\src\Cooking.cpp Line: 273)
@@ -36,21 +36,21 @@ Failed to create Convex Mesh from source mesh "Torus". Source mesh is likely hav
 (Filename:  Line: 54)
 
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 4.359684 ms
+UnloadTime: 4.581444 ms
 
 Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 383.
-Total: 0.248640 ms (FindLiveObjects: 0.039040 ms CreateObjectMapping: 0.014080 ms MarkObjects: 0.186240 ms  DeleteObjects: 0.008320 ms)
+Total: 0.287360 ms (FindLiveObjects: 0.028160 ms CreateObjectMapping: 0.014720 ms MarkObjects: 0.234880 ms  DeleteObjects: 0.008000 ms)
 
 Platform assembly: D:\Documents\Spaceship\Builds\Alpha_Data\Managed\System.Xml.dll (this message is harmless)
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.945282 ms
+UnloadTime: 1.289281 ms
 
 Unloading 84 unused Assets to reduce memory usage. Loaded Objects now: 334.
-Total: 1.451841 ms (FindLiveObjects: 0.064960 ms CreateObjectMapping: 0.056000 ms MarkObjects: 0.780800 ms  DeleteObjects: 0.548480 ms)
+Total: 0.569920 ms (FindLiveObjects: 0.038080 ms CreateObjectMapping: 0.022720 ms MarkObjects: 0.308160 ms  DeleteObjects: 0.200000 ms)
 
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.384320 ms
+UnloadTime: 0.381440 ms
 
 Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 300.
-Total: 0.312320 ms (FindLiveObjects: 0.024320 ms CreateObjectMapping: 0.012800 ms MarkObjects: 0.229440 ms  DeleteObjects: 0.045120 ms)
+Total: 0.324800 ms (FindLiveObjects: 0.031040 ms CreateObjectMapping: 0.013440 ms MarkObjects: 0.233920 ms  DeleteObjects: 0.045120 ms)
 
