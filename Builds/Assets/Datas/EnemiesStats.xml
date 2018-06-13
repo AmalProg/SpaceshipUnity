@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes" ?>
+<EnemiesStats>
+	<Enemy type="asteroid">
+		<Prob>30</Prob>
+		<Stat name="size">3</Stat>
+		<Stat name="speed">500</Stat>
+		<Stat name="life">40</Stat>
+		<Stat name="pointValue">300</Stat>
+	</Enemy>
+	<Enemy type="weak">
+		<Prob>30</Prob>
+		<Stat name="speed">400</Stat>
+		<Stat name="life">50</Stat>
+		<Stat name="pointValue">500</Stat>	
+	</Enemy>
+	<Enemy type="suicidal">
+		<Prob>30</Prob>
+		<Stat name="speed">700</Stat>
+		<Stat name="life">20</Stat>
+		<Stat name="pointValue">400</Stat>	
+	</Enemy>
+	<Enemy type="medium">
+		<Prob>10</Prob>
+		<Stat name="speed">600</Stat>
+		<Stat name="life">70</Stat>
+		<Stat name="pointValue">1000</Stat>	
+	</Enemy>
+</EnemiesStats>
