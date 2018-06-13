@@ -8,11 +8,8 @@ public class MediumEnemyController : SpaceshipEnemy {
 	private AI _ai;
 	public GameObject _missileLauncher;
 
-	// Use this for initialization
-	new void Start () {
-		base.Start ();
-
-		_ai = new MediumAI();
+	new void Awake() {
+		base.Awake ();
 
 		_maxLife = 70;
 		_life = _maxLife;
@@ -22,6 +19,13 @@ public class MediumEnemyController : SpaceshipEnemy {
 		_fireDelayTimer = _fireDelay;
 		_pointsValue = 1000;
 		_name = "Medium enemy";
+	}
+
+	// Use this for initialization
+	new void Start () {
+		base.Start ();
+
+		_ai = new MediumAI();
 	}
 	
 	// Update is called once per frame

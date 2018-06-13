@@ -15,11 +15,13 @@ public class SuicidalAI : AI {
 	override public void Move(SpaceshipEnemy entity) {
 		float elapsedTime = Time.deltaTime;
 		Vector3 playerDir = player.transform.position - entity.transform.position;
-		float angle = Vector3.Angle(entity.transform.forward, playerDir);
+		float angle = Vector3.Angle (entity.transform.forward, playerDir);
 		Vector3 cross = Vector3.Cross (entity.transform.forward, playerDir);
 		if (cross.y < 0)
 			angle *= -1;
-		entity.transform.Rotate(angle * elapsedTime, 0, 0);
+
+
+		entity.transform.Rotate(angle * elapsedTime * entity._rotationSpeed, 0, 0);
 
 		entity.transform.Translate(0, 0, elapsedTime * entity._speed);
 	}

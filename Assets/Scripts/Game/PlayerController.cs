@@ -24,19 +24,22 @@ public class PlayerController : Spaceship {
 			return tmp; } }
 	public bool isDead { get { return _isDead; } }
 
-	// Use this for initialization
-	new void Start () {
-		base.Start();
+	new void Awake() {
+		base.Awake ();
 
 		_maxLife = 100;
 		_life = _maxLife;
 		_speed = 8.0f;
 		_rotationSpeed = 180;
-		_fireDelayTimer = 0.0f;
-		_fireDelay = 0.2f;
 		_isDead = false;
 		_level = 1;
 		_hitDamage = 75;
+		_fireDelay = 0.25f;
+		_fireDelayTimer = 0.0f;
+	}
+
+	new void Start () {
+		base.Start();
 	}
 
 	// Update is called once per frame

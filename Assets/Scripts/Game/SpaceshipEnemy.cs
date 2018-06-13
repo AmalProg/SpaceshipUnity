@@ -11,10 +11,14 @@ public abstract class SpaceshipEnemy : Spaceship {
 
 	public Vector3 fireDirection { get { return _fireDirection; } set { _fireDirection = value; } }
 
+	new protected void Awake() {
+		base.Awake ();
+
+		gameObject.layer = 8;
+	}
+
 	new protected void Start() { 
 		base.Start();
-		
-		gameObject.layer = 8;
 	}
 
 	override public void Explode (GameObject caster) {

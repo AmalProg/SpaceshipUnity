@@ -7,11 +7,8 @@ public class WeakEnemyController : SpaceshipEnemy {
 	private AI _ai;
 	public GameObject missilePrefab;
 
-	// Use this for initialization
-	new void Start () {
-		base.Start ();
-
-		_ai = new WeakAI ();
+	new void Awake() {
+		base.Awake ();
 
 		_maxLife = 50;
 		_life = _maxLife;
@@ -21,6 +18,12 @@ public class WeakEnemyController : SpaceshipEnemy {
 		_fireDelayTimer = _fireDelay;
 		_pointsValue = 500;
 		_name = "Weak enemy";
+	}
+
+	new void Start () {
+		base.Start ();
+
+		_ai = new WeakAI ();
 	}
 	
 	// Update is called once per frame

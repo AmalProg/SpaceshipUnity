@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour {
 		_difficultyUpDelayTimer = 0.0f;
 
 		_evolveDelay = 60f;
-		_spawnDelayTimer = 0f;
+		_evolveDelayTimer = 0f;
 
 		_averageStatUpDelay = 10f;
 		_averageStatUpDelayTimer = 0.0f;
@@ -93,11 +93,12 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		_spawnDelayTimer += Time.deltaTime;
-		_difficultyUpDelayTimer += Time.deltaTime;
+		float elaspedTime = Time.deltaTime;
 
-		_evolveDelayTimer += Time.deltaTime;
-		_averageStatUpDelayTimer += Time.deltaTime;
+		_spawnDelayTimer += elaspedTime;
+		_difficultyUpDelayTimer += elaspedTime;
+		_evolveDelayTimer += elaspedTime;
+		_averageStatUpDelayTimer += elaspedTime;
 
 		if (_difficultyUpDelayTimer > _difficultyUpDelay && _spawnDelay > 1.0f) {
 			_spawnDelay -= 0.5f;
